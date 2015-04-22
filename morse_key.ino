@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // this is a large buffer for replies
 char replybuffer[255];
 
-char sendto[6] = "21212";
+char sendto[11] = "0000000000";
 
 // or comment this out & use a hardware serial port like Serial1 (see below)
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
@@ -52,7 +52,7 @@ int DAH = 3*DIT;
 
 String morseCode = "";
 String message = "";
-char tweet[140];
+char tweet[165];
 
     char LATIN_CHARACTERS[] = {
         // Numbers
@@ -232,12 +232,13 @@ void decodeMorse() {
 }
 
 void sendTweet() {
+  message = "[[insert email address here]] (" + message + ")"; // enter an email address to send SMS message to
   
   if (message.length()==0) return;
   paused = true;
   
   Serial.print("sending tweet ... ");
-  message.toCharArray(tweet,140);
+  message.toCharArray(tweet,165);
   
   if (fona.sendSMS(sendto, tweet)) {
     // Specify &Serial to output received response to serial port
